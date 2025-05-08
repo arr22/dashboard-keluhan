@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 # === Load Data ===
-df = pd.read_excel('data.xlsx')
+df = pd.read_excel('Form IT Helpdesk.xlsx')
 
 # Ubah nama kolom sesuai Excel kamu
 df.columns = ["Start Time", "No Tiket", "Nama", "Email", "No HP", "Kategori", "NIK", "Keluhan"]
