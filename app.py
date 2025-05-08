@@ -15,10 +15,10 @@ df["Start time"] = pd.to_datetime(df["Start time"])
 # === Sidebar Filter ===
 start_date, end_date = st.sidebar.date_input(
     "Pilih Rentang Tanggal", 
-    [df["Start"].min().date(), df["Start"].max().date()]
+    [df["Start time"].min().date(), df["Start time"].max().date()]
 )
 
-filtered_df = df[(df["Start"].dt.date >= start_date) & (df["Start"].dt.date <= end_date)]
+filtered_df = df[(df["Start time"].dt.date >= start_date) & (df["Start time"].dt.date <= end_date)]
 
 # === Filter Data Berdasarkan Tanggal ===
 filtered_df = df[df["Start time"].dt.date == selected_date]
