@@ -6,27 +6,26 @@ from datetime import datetime
 # === Load Data ===
 df = pd.read_excel('Form IT Helpdesk.xlsx')
 
-# Tampilkan nama kolom yang tersedia
-# st.write(df.columns.tolist())  # Gunakan ini untuk cek nama-nama kolom
-
-# Pastikan kolom tanggal ada dan ubah jadi datetime
+# Pastikan kolom tanggal dikonversi
 df["Start time"] = pd.to_datetime(df["Start time"])
 
 # === Sidebar Filter ===
+st.sidebar.title("Filter Data")
 start_date, end_date = st.sidebar.date_input(
     "Pilih Rentang Tanggal", 
     [df["Start time"].min().date(), df["Start time"].max().date()]
 )
 
-filtered_df = df[(df["Start time"].dt.date >= start_date) & (df["Start time"].dt.date <= end_date)]
-
-# === Filter Data Berdasarkan Tanggal ===
-filtered_df = df[df["Start time"].dt.date == selected_date]
+# === Filter Berdasarkan Rentang Tanggal ===
+filtered_df = df[
+    (df["Start time"].dt.date >= start_date) & 
+    (df["Start time"].dt.date <= end_date)
+]
 
 # === Header ===
 st.title("📊 Dashboard Keluhan Harian")
-st.write(f"Data untuk tanggal: {selected_date.strftime('%d %B %Y')}")
-st.metric("Jumlah Keluhan Hari Ini", len(filtered_df))
+st.write(f"Data dari: {start_date.strftime('%d %B %Y')} sampai {end_date.strftime('%d %B %Y')}")
+st.metric("Jumlah Keluhan", len(filtered_df))
 
 # === Pie Chart Jenis Keluhan ===
 st.subheader("Distribusi Jenis Keluhan")
@@ -38,7 +37,7 @@ ax1.axis('equal')
 st.pyplot(fig1)
 
 # === Tabel Detail ===
-st.subheader("📋 Tabel Keluhan Hari Ini")
+st.subheader("📋 Tabel Keluhan")
 st.dataframe(filtered_df)
 
 # === Grafik Jumlah Harian ===
