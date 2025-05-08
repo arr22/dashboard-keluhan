@@ -6,16 +6,18 @@ from datetime import datetime
 # === Load Data ===
 df = pd.read_excel('Form IT Helpdesk.xlsx')
 
-# Ubah nama kolom sesuai Excel kamu
-df.columns = ["Start Time", "No Tiket", "Nama", "Email", "No HP", "Kategori", "NIK", "Keluhan"]
-df["Start Time"] = pd.to_datetime(df["Start Time"])
+# Tampilkan nama kolom yang tersedia
+# st.write(df.columns.tolist())  # Gunakan ini untuk cek nama-nama kolom
+
+# Pastikan kolom tanggal ada dan ubah jadi datetime
+df["Start time"] = pd.to_datetime(df["Start time"])
 
 # === Sidebar Filter ===
 st.sidebar.title("Filter Data")
 selected_date = st.sidebar.date_input("Pilih Tanggal", datetime.today())
 
 # === Filter Data Berdasarkan Tanggal ===
-filtered_df = df[df["Start Time"].dt.date == selected_date]
+filtered_df = df[df["Start time"].dt.date == selected_date]
 
 # === Header ===
 st.title("📊 Dashboard Keluhan Harian")
@@ -24,7 +26,7 @@ st.metric("Jumlah Keluhan Hari Ini", len(filtered_df))
 
 # === Pie Chart Jenis Keluhan ===
 st.subheader("Distribusi Jenis Keluhan")
-jenis_counts = filtered_df["Kategori"].value_counts()
+jenis_counts = filtered_df["Pilih kendala dibawah Ini"].value_counts()
 
 fig1, ax1 = plt.subplots()
 ax1.pie(jenis_counts, labels=jenis_counts.index, autopct='%1.1f%%', startangle=90)
@@ -37,5 +39,5 @@ st.dataframe(filtered_df)
 
 # === Grafik Jumlah Harian ===
 st.subheader("📈 Grafik Jumlah Keluhan per Hari")
-daily_counts = df.groupby(df["Start Time"].dt.date).size()
+daily_counts = df.groupby(df["Start time"].dt.date).size()
 st.line_chart(daily_counts)
