@@ -13,8 +13,12 @@ df = pd.read_excel('Form IT Helpdesk.xlsx')
 df["Start time"] = pd.to_datetime(df["Start time"])
 
 # === Sidebar Filter ===
-st.sidebar.title("Filter Data")
-selected_date = st.sidebar.date_input("Pilih Tanggal", datetime.today())
+start_date, end_date = st.sidebar.date_input(
+    "Pilih Rentang Tanggal", 
+    [df["Start"].min().date(), df["Start"].max().date()]
+)
+
+filtered_df = df[(df["Start"].dt.date >= start_date) & (df["Start"].dt.date <= end_date)]
 
 # === Filter Data Berdasarkan Tanggal ===
 filtered_df = df[df["Start time"].dt.date == selected_date]
